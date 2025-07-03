@@ -240,7 +240,7 @@ else:
     )
 
     st.dataframe(
-        summary_df,
+        summary_df[["Monthly Payment", "Strategy", "Total Paid", "Time Taken", "Savings from Worst Scenario"]],
         column_config={
             "Monthly Payment": st.column_config.NumberColumn(
                 format="dollar",

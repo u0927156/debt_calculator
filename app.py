@@ -32,7 +32,11 @@ def run_payment_plans_for_different_payments(
 
 if "debt_df" not in st.session_state:
     debt_df = pd.DataFrame(
-        data={"Amount": [20000, 30000], "Interest Rate": [3, 4.25], "Minimum Payment": [200, 100]}
+        data={
+            "Amount": [20000, 30000],
+            "Interest Rate": [3, 4.25],
+            "Minimum Payment": [200, 100],
+        }
     )
 
     st.session_state.debt_df = debt_df
@@ -132,11 +136,7 @@ with col1:
         value=True,
     )
 with col2:
-    use_avalanche = st.checkbox(
-        label="Avalanche",
-        key="chk_avalanche",
-        value=True
-    )
+    use_avalanche = st.checkbox(label="Avalanche", key="chk_avalanche", value=True)
 with col3:
     use_table = st.checkbox(
         label="Table Order",
@@ -148,7 +148,9 @@ if len(curr_debt_df) == 0:
     st.write("Add some debts to get started.")
 elif len(curr_payment_df) == 0:
     st.write("Add some payment options to get started.")
-elif (not use_snowball and not use_avalanche and not use_table) and len(curr_debt_df) > 1:
+elif (not use_snowball and not use_avalanche and not use_table) and len(
+    curr_debt_df
+) > 1:
     st.write("You must select at least one strategy.")
 else:
 
@@ -240,7 +242,15 @@ else:
     )
 
     st.dataframe(
-        summary_df[["Monthly Payment", "Strategy", "Total Paid", "Time Taken", "Savings from Worst Scenario"]],
+        summary_df[
+            [
+                "Monthly Payment",
+                "Strategy",
+                "Total Paid",
+                "Time Taken",
+                "Savings from Worst Scenario",
+            ]
+        ],
         column_config={
             "Monthly Payment": st.column_config.NumberColumn(
                 format="dollar",
@@ -274,7 +284,9 @@ else:
         st.plotly_chart(total_fig)
 
     st.markdown("## Strategy Details")
-    st.markdown("Here you can select a specific strategy to see how")
+    st.markdown(
+        "Here you can select a specific strategy to see what a specific strategy looks like on a loan-by-loan basis."
+    )
     payment_options = {
         f"{row['Strategy']} - ${row['Monthly Payment']}": (
             row["Strategy"],
@@ -341,9 +353,11 @@ else:
     st.plotly_chart(breakdown_total_paid_fig)
     # st.dataframe(selected_df)
 
-st.markdown("""
+st.markdown(
+    """
             Credits: 
 
             Made by Spencer Peterson. [My Website](https://www.spencertpeterson.com/). [My LinkedIn](https://www.linkedin.com/in/spencer-peterson-uofu/)
 
-            """)
+            """
+)

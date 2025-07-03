@@ -32,7 +32,7 @@ def run_payment_plans_for_different_payments(
 
 if "debt_df" not in st.session_state:
     debt_df = pd.DataFrame(
-        data={"Amount": [20000], "Interest Rate": [3], "Minimum Payment": [300]}
+        data={"Amount": [20000, 30000], "Interest Rate": [3, 4.25], "Minimum Payment": [200, 100]}
     )
 
     st.session_state.debt_df = debt_df
@@ -41,7 +41,7 @@ if "debt_df" not in st.session_state:
 
 if "payment_df" not in st.session_state:
     payment_df = pd.DataFrame(
-        data={"Amount": [200]},
+        data={"Amount": [500, 400]},
     )
 
     st.session_state.payment_df = payment_df
@@ -135,6 +135,7 @@ with col2:
     use_avalanche = st.checkbox(
         label="Avalanche",
         key="chk_avalanche",
+        value=True
     )
 with col3:
     use_table = st.checkbox(
@@ -147,7 +148,7 @@ if len(curr_debt_df) == 0:
     st.write("Add some debts to get started.")
 elif len(curr_payment_df) == 0:
     st.write("Add some payment options to get started.")
-elif not use_snowball and not use_avalanche and not use_table:
+elif (not use_snowball and not use_avalanche and not use_table) and len(curr_debt_df) > 1:
     st.write("You must select at least one strategy.")
 else:
 
@@ -339,3 +340,10 @@ else:
     st.plotly_chart(breakdown_balance_fig)
     st.plotly_chart(breakdown_total_paid_fig)
     # st.dataframe(selected_df)
+
+st.markdown("""
+            Credits: 
+
+            Made by Spencer Peterson. [My Website](https://www.spencertpeterson.com/). [My LinkedIn](https://www.linkedin.com/in/spencer-peterson-uofu/)
+
+            """)

@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "finances"
+name = "debt_calculator"
 version = "0.1.0"
-description = ""
+description = "An app for calculating how long it'll take to pay off debts."
 authors = ["Spencer Peterson <spencer9696@gmail.com>"]
 readme = "README.md"
 

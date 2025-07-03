@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "finances"
+version = "0.1.0"
+description = ""
+authors = ["Spencer Peterson <spencer9696@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2.2"
+numpy = "^2.0.1"
+plotly = "^5.23.0"
+kaleido = "0.2.1"
+ipykernel = "^6.29.5"
+jupyter = "^1.0.0"
+pytest = "^8.3.2"
+streamlit = "^1.46.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

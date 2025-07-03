@@ -24,9 +24,6 @@ def _get_total_paid(debts: list[Obligation]):
 
 
 def run_payment_plan(debts: list[Obligation], monthly_funds: float):
-    total_minimum_payment = sum(
-        [debt.minimum_payment for debt in debts if not debt.is_finished]
-    )
 
     dataframe_cols = (
         ["month"]
@@ -48,10 +45,14 @@ def run_payment_plan(debts: list[Obligation], monthly_funds: float):
 
     df["total_balance"] = total_balance
 
-    extra_payment = monthly_funds - total_minimum_payment
     month = 1
 
     while not all([debt.is_finished for debt in debts]):
+        total_minimum_payment = sum(
+            [debt.minimum_payment for debt in debts if not debt.is_finished]
+        )
+        extra_payment = monthly_funds - total_minimum_payment
+
         monthly_dict = {}
         has_paid_extra = False
         for debt in debts:
@@ -61,11 +62,7 @@ def run_payment_plan(debts: list[Obligation], monthly_funds: float):
                 monthly_dict[f"{debt.name}_total_paid"] = debt.get_total_paid()
                 continue
 
-            if not has_paid_extra:
-                debt.advance_month(debt.minimum_payment + extra_payment)
-                has_paid_extra = True
-            else:
-                debt.advance_month()
+            extra_payment = debt.advance_month(debt.minimum_payment + extra_payment)
 
             monthly_dict[f"{debt.name}_balance"] = debt.get_balance()
             monthly_dict[f"{debt.name}_total_paid"] = debt.get_total_paid()

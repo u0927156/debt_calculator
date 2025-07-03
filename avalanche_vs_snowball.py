@@ -1,6 +1,7 @@
 # %%
 from budgeter.obligation import Obligation
 from budgeter.obligation_types import ObligationType
+from budgeter.payment_plan import run_payment_plan
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -12,75 +13,35 @@ import pandas as pd
 debt_params_list = [
     dict(
         name="loan_a",
-        amount=25000,
+        amount=5000,
         obligation_type=ObligationType.LOAN,
         interest_rate=3,
-        minimum_payment=300,
+        minimum_payment=100,
     ),
     dict(
         name="loan_b",
-        amount=50000,
+        amount=20000,
         obligation_type=ObligationType.LOAN,
-        interest_rate=10,
-        minimum_payment=300,
+        interest_rate=8,
+        minimum_payment=100,
     ),
     dict(
         name="loan_c",
-        amount=75000,
+        amount=1000,
         obligation_type=ObligationType.LOAN,
-        interest_rate=3,
-        minimum_payment=300,
+        interest_rate=0,
+        minimum_payment=10,
+    ),
+    dict(
+        name="loan_d",
+        amount=1500,
+        obligation_type=ObligationType.LOAN,
+        interest_rate=10,
+        minimum_payment=50,
     ),
 ]
 
-monthly_funds = 2000
-# %%
-# Define how to run a theoretical plan
-
-
-def run_payment_plan(debts: list[Obligation], monthly_funds: float):
-    total_minimum_payment = sum(
-        [debt.minimum_payment for debt in debts if not debt.is_finished]
-    )
-
-    snowball_dataframe_cols = (
-        ["month"]
-        + [f"{debt.name}_balance" for debt in debts]
-        + [f"{debt.name}_total_paid" for debt in debts]
-    )
-
-    snowball_df = pd.DataFrame(columns=snowball_dataframe_cols)
-
-    extra_payment = monthly_funds - total_minimum_payment
-
-    month = 1
-
-    while not all([debt.is_finished for debt in debts]):
-        monthly_dict = {}
-        has_paid_extra = False
-        for debt in debts:
-
-            if debt.is_finished:
-                monthly_dict[f"{debt.name}_balance"] = debt.get_balance()
-                monthly_dict[f"{debt.name}_total_paid"] = debt.get_total_paid()
-                continue
-
-            if not has_paid_extra:
-                debt.advance_month(debt.minimum_payment + extra_payment)
-                has_paid_extra = True
-            else:
-                debt.advance_month()
-
-            monthly_dict[f"{debt.name}_balance"] = debt.get_balance()
-            monthly_dict[f"{debt.name}_total_paid"] = debt.get_total_paid()
-
-        # Keep track of time
-        monthly_dict["month"] = month
-        month += 1
-
-        snowball_df.loc[len(snowball_df)] = monthly_dict
-
-    return snowball_df
+monthly_funds = 750
 
 
 # %%
